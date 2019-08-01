@@ -18,6 +18,8 @@ from django.urls import path
 import api.views as views
 
 urlpatterns = [
+    path('', views.homePage),
     path('admin/', admin.site.urls),
-    path('', views.testing)
+    path('users/', views.getUsers),
+    path('events/', views.getEvents),
 ]
