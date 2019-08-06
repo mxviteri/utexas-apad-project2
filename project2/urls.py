@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import api.views as views
+import api.controllers as controllers
 
 urlpatterns = [
     path('', views.homePage),
     path('admin/', admin.site.urls),
-    path('users/', views.getUsers),
-    path('events/', views.getEvents),
+    path('users/', controllers.getUsers),
+    path('events/', controllers.getEvents),
 ]
