@@ -1,5 +1,29 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<h1>Welcome to the server</h1>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Events</h1> 
+        <p>Create and join events around Austin!</p> 
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-group row">
+        <input class="form-control col-sm-3" type="text" placeholder="Search">
+        <button type="submit" class="btn btn-primary col-sm-1 ml-2">Search</button>
+    </div>
+    <div class="list-group row">
+        <a href="#" class="list-group-item list-group-item-action">Event 1</a>
+        <a href="#" class="list-group-item list-group-item-action">Event 2</a>
+        <a href="#" class="list-group-item list-group-item-action">Event 3</a>
+        <a href="#" class="list-group-item list-group-item-action">Event 4</a>
+        <a href="#" class="list-group-item list-group-item-action">Event 5</a>
+    </div>
+</div>
+
+<div class="page-footer font-small blue">
+  <div class="footer-copyright text-center py-3">Created by Malik Ouda & Matt Viteri
+  </div>
+</div>
 {% endblock %}
