@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-"""
+
 db = pymysql.connect(
     os.getenv("DB_HOST"),
     os.getenv("DB_USER"),
@@ -13,7 +13,7 @@ db = pymysql.connect(
     os.getenv("DB_NAME")
 )
 cursor = db.cursor()
-"""
+
 # Create your views here.
 def homePage(request):
     return render(request, 'home.html')

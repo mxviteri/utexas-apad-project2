@@ -1,0 +1,4 @@
+runtime: python37
+env: standard
+
+entrypoint: python manage.py runserver $PORT
