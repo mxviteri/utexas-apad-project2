@@ -9,13 +9,28 @@
 </div>
 
 <div class="container">
-    <div class="form-group row">
+    <form class="form-group row" action="" method="POST">
         <input class="form-control col-sm-3" type="text" placeholder="Search">
         <button type="submit" class="btn btn-primary col-sm-1 ml-2">Search</button>
-    </div>
-    <div class="list-group row">
+    </form>
+    <div class="list-group list-group-flush row">
+        <div class="list-group-item text-center col-sm-12 bg-secondary text-white">
+            <div class="row">
+                <span class="col-sm-3">Name</span>
+                <span class="col-sm-3">Venue</span>
+                <span class="col-sm-3">Date & Time</span>
+                <span class="col-sm-3">Spots Left / Capacity</span>
+            </div>
+        </div>
         {% for event in events %}
-    <a href="#" class="list-group-item list-group-item-action">{{ event.name|title }} | {{event.venue|title}} | {{ event.date }} | Capacity: {{ event.capacity }} | # Spots Left: UNDER CONSTRUCTION</a>
+        <a href="#" class="list-group-item list-group-item-action text-center col-sm-12">
+            <div class="row">
+                <span class="col-sm-3">{{ event.name|title }}</span>
+                <span class="col-sm-3">{{event.venue|title}}</span>
+                <span class="col-sm-3">{{ event.date }}</span>
+                <span class="col-sm-3"># / {{event.capacity}}</span>
+            </div>
+        </a>
         {% endfor %}
     </div>
 </div>
