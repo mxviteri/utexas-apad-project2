@@ -1,6 +1,7 @@
 import pymysql
 from dotenv import load_dotenv
 import os
+from collections import namedtuple
 
 load_dotenv()
 
@@ -18,9 +19,14 @@ def getUsers():
 	return users
 
 def getEvents():
-	cursor.execute("select * from events")
-	events = cursor.fetchall()
-	return events
+    events = []
+    cursor.execute("select e.name, v.name, e.date, e.capacity from events e join venues v on e.venue=v.id")
+    result = cursor.fetchall()
+    for item in result:
+        EventRecord = namedtuple("EventRecord", "name, venue, date, capacity")
+        event = EventRecord._make(item)
+        events.append(event)
+    return events
 
 def isAdmin(name):
 	cursor.execute(

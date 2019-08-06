@@ -15,7 +15,7 @@
     </div>
     <div class="list-group row">
         {% for event in events %}
-        <a href="#" class="list-group-item list-group-item-action">{{ event.1|title }}</a>
+    <a href="#" class="list-group-item list-group-item-action">{{ event.name|title }} | {{event.venue|title}} | {{ event.date }} | Capacity: {{ event.capacity }} | # Spots Left: UNDER CONSTRUCTION</a>
         {% endfor %}
     </div>
 </div>
