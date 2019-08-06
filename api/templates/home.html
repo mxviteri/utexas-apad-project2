@@ -14,11 +14,9 @@
         <button type="submit" class="btn btn-primary col-sm-1 ml-2">Search</button>
     </div>
     <div class="list-group row">
-        <a href="#" class="list-group-item list-group-item-action">Event 1</a>
-        <a href="#" class="list-group-item list-group-item-action">Event 2</a>
-        <a href="#" class="list-group-item list-group-item-action">Event 3</a>
-        <a href="#" class="list-group-item list-group-item-action">Event 4</a>
-        <a href="#" class="list-group-item list-group-item-action">Event 5</a>
+        {% for event in events %}
+        <a href="#" class="list-group-item list-group-item-action">{{ event.1|title }}</a>
+        {% endfor %}
     </div>
 </div>
 
