@@ -19,3 +19,16 @@ def getUsers(request):
 def getEvents(request):
     events = controllers.getEvents()
     return JsonResponse({ "data": events })
+
+def postUser(request):
+    body = json.loads(request.body)
+    name = body["name"]
+    role = body["role"]
+    user = body["user"]
+
+    try:
+        result = controllers.addUser(name, role, user)
+        return JsonResponse({ "msg": result })
+    except Exception as e:
+        return JsonResponse({ "msg": str(e) }, status=400)
+
