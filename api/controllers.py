@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 import pymysql
 from dotenv import load_dotenv
 import os
@@ -6,47 +5,61 @@ import os
 load_dotenv()
 
 db = pymysql.connect(
-    os.getenv("DB_HOST"),
-    os.getenv("DB_USER"),
-    os.getenv("DB_PASS"),
-    os.getenv("DB_NAME")
+	os.getenv("DB_HOST"),
+	os.getenv("DB_USER"),
+	os.getenv("DB_PASS"),
+	os.getenv("DB_NAME")
 )
 cursor = db.cursor()
 
-def getUsers(request):
-    cursor.execute("select * from users")
-    users = cursor.fetchall()
+def getUsers():
+	cursor.execute("select * from users")
+	users = cursor.fetchall()
+	return users
 
-    return JsonResponse({ "data": users })
-
-def getEvents(request):
-    cursor.execute("select * from events")
-    events = cursor.fetchall()
-
-    return JsonResponse({ "data": events })
-
+def getEvents():
+	cursor.execute("select * from events")
+	events = cursor.fetchall()
+	return events
 
 def isAdmin(name):
 	cursor.execute(
 		"""
-		SELECT name
-		FROM roles
-		JOIN users
-		ON roles.id = users.role
-		WHERE users.user = ?
-		""",
-		(name,)
+		select name from roles
+		join users on roles.id = users.role
+		where users.user = ?
+		""", (name,)
 	)
 	result = cursor.fetchone()
-	return True if result != None and result[0] == "admin" else False
+	return True if result and result[0] == "admin" else False
 
-# def findUser(name):
-#     cursor.execute("select * from users where user = ?", (name,))
-#     result = cursor.fetchone()
-#     return None
-    # if result:
-    #     UserRecord = namedtuple("UserRecord", "id, name, role, event")
-    #     user = UserRecord._make(result)	
-    #     return user
-    # else:
-    #     return None
+def findUser(name):
+	cursor.execute("select * from users where user = ?", (name,))
+	result = cursor.fetchone()
+	return result[1] if result else None
+
+def addUser(name, role, user):
+	if not isAdmin(user):
+		print('you are not allowed to perform this action')
+		return None
+
+	found = findUser(name)
+	if not found:
+		cursor.execute("select id from roles where name = ?", (role,))
+		result = cursor.fetchone()
+
+	if not result:
+		print("not a valid role")
+		return None
+
+	roleNum = result[0]
+	cursor.execute("insert into users(user, role) values(?, ?)", (name, roleNum))
+	rows = cursor.rowcount
+	if rows == 1:
+		db.commit()
+		print("User '" + name + "' has been added succesfully.")
+	else:
+		print("User not added")
+		db.rollback()
+
+	return None
