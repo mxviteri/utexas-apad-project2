@@ -1,3 +1,6 @@
+## Build Status
+[![Codeship Status for mxviteri/utexas-apad-project2](https://app.codeship.com/projects/c20911d0-9a95-0137-006f-66ae6ddf8ea6/status?branch=master)](https://app.codeship.com/projects/358284)
+
 ## Setup / Local Development
 
 * Ensure Python is installed on your machine
