@@ -23,5 +23,6 @@ urlpatterns = [
     path('users/', views.getUsers),
     path('events/', views.getEvents),
     path('user', views.addUser),
-    path('login', views.loginUser)
+    path('login', views.loginUser),
+    path('events/<int:eventId>', views.joinEvent)
 ]

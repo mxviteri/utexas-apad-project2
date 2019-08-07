@@ -57,7 +57,7 @@ def addUser(username, password, role):
 		raise Exception('User not added')
 
 	db.commit()
-	msg = 'User {} has been added successfully'.format(username)
+	msg = "User {} has been added successfully".format(username)
 	return msg
 
 def loginUser(username, password):
@@ -77,3 +77,17 @@ def loginUser(username, password):
 		"username": result[1],
 		"role": result[2]
 	}
+
+def joinEvent(userId, eventId):
+	cursor.execute(
+		"insert into usersEvents(userId, eventId) values(%s, %s)", (userId, eventId)
+	)
+
+	rows = cursor.rowcount
+	if not rows == 1:
+		db.rollback()
+		raise Exception('User could not join event')
+
+	db.commit()
+	msg = "User has successfully joined the event"
+	return msg

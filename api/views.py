@@ -28,7 +28,6 @@ def getEvents(request):
 @require_http_methods(["POST"])
 def addUser(request):
     body = json.loads(request.body)
-
     username = body["username"]
     password = body["password"]
     role = "admin" if body["isAdmin"] else "user"
@@ -43,7 +42,6 @@ def addUser(request):
 @require_http_methods(["POST"])
 def loginUser(request):
     body = json.loads(request.body)
-
     username = body["username"]
     password = body["password"]
 
@@ -53,5 +51,16 @@ def loginUser(request):
             return JsonResponse({ "msg": "No user found" }, status=404)
 
         return JsonResponse({ "msg": "User logged in successfully", "user": result })
+    except Exception as e:
+        return JsonResponse({ "msg": str(e) }, status=400)
+
+@require_http_methods(["POST"])
+def joinEvent(request, eventId):
+    body = json.loads(request.body)
+    userId = body["userId"]
+
+    try:
+        result = controllers.joinEvent(userId, eventId)
+        return JsonResponse({ "msg": result })
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)
