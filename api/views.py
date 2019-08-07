@@ -61,6 +61,7 @@ def loginUser(request):
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)
 
+
 @require_http_methods(["POST"])
 def joinEvent(request, eventId):
     body = json.loads(request.body)
@@ -69,5 +70,26 @@ def joinEvent(request, eventId):
     try:
         result = controllers.joinEvent(userId, eventId)
         return JsonResponse({ "msg": result })
+    except Exception as e:
+        return JsonResponse({ "msg": str(e) }, status=400)
+
+
+@require_http_methods(["GET"])
+def getEventCapacity(request, eventId):
+    try:
+        result = controllers.getCapacityByEventId(eventId)
+        if not result:
+            return JsonResponse({ "msg": "No event found" }, status=404)
+
+        return JsonResponse({ "capacity": result })
+    except Exception as e:
+        return JsonResponse({ "msg": str(e) }, status=400)
+
+
+@require_http_methods(["GET"])
+def getEventParticipants(request, eventId):
+    try:
+        result = controllers.getParticipantsByEventId(eventId)
+        return JsonResponse({ "participants": result })
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)

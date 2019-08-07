@@ -18,12 +18,15 @@ from django.urls import path
 import api.views as views
 
 urlpatterns = [
+    ## PAGE ROUTES ##
     path('', views.homePage),
-    path('admin/', admin.site.urls),
-    path('users/', views.getUsers),
-    path('events/', views.getEvents),
-    path('user', views.addUser),
-    path('login', views.loginUser),
-    path('events/<int:eventId>', views.joinEvent),
     path('events/details/<int:eventId>', views.event_detail),
+    ## API ROUTES ##
+    path('api/users/', views.getUsers),
+    path('api/events/', views.getEvents),
+    path('api/user', views.addUser),
+    path('api/login', views.loginUser),
+    path('api/events/<int:eventId>', views.joinEvent),
+    path('api/events/capacity/<int:eventId>', views.getEventCapacity),
+    path('api/events/participants/<int:eventId>', views.getEventParticipants)
 ]

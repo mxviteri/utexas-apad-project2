@@ -28,6 +28,13 @@ def getEvents():
         events.append(event)
     return events
 
+def getEvent(eventId):
+    cursor.execute("select e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
+    result = cursor.fetchone()
+    EventRecord = namedtuple("EventRecord", "name, venue, datetime, capacity, description")
+    event = EventRecord._make(result)
+    return event
+
 def isAdmin(name):
 	cursor.execute(
 		"""
@@ -92,9 +99,18 @@ def joinEvent(userId, eventId):
 	msg = "User has successfully joined the event"
 	return msg
 
-def getEvent(eventId):
-    cursor.execute("select e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
-    result = cursor.fetchone()
-    EventRecord = namedtuple("EventRecord", "name, venue, datetime, capacity, description")
-    event = EventRecord._make(result)
-    return event
+def getCapacityByEventId(eventId):
+	cursor.execute("select capacity from events where id = %s", (eventId,))
+	result = cursor.fetchone()
+	return result[0] if result is not None else None
+
+def getParticipantsByEventId(eventId):
+	cursor.execute(
+		"""
+			select u.username from usersEvents ue
+			join users u on ue.userId = u.id
+			where ue.eventId = %s
+		""", (eventId,)
+	)
+	result = cursor.fetchall()
+	return result if result is not None else []
