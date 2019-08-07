@@ -14,7 +14,7 @@
         <button type="submit" class="btn btn-primary col-sm-1 ml-2">Search</button>
     </form>
     <div class="list-group list-group-flush row">
-        <div class="list-group-item text-center col-sm-12 bg-secondary text-white">
+        <div class="list-group-item col-sm-12 bg-secondary text-white">
             <div class="row">
                 <span class="col-sm-3">Name</span>
                 <span class="col-sm-3">Venue</span>
@@ -23,13 +23,14 @@
             </div>
         </div>
         {% for event in events %}
-        <a href="#" class="list-group-item list-group-item-action text-center col-sm-12">
+        <a href="#" class="list-group-item list-group-item-action col-sm-12">
             <div class="row">
                 <span class="col-sm-3">{{ event.name|title }}</span>
                 <span class="col-sm-3">{{event.venue|title}}</span>
                 <span class="col-sm-3">{{ event.datetime }}</span>
                 <span class="col-sm-3"># / {{event.capacity}}</span>
             </div>
+            <small>{{ event.description | slice:":100" }}</small>
         </a>
         {% endfor %}
     </div>

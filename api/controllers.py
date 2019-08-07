@@ -20,10 +20,17 @@ def getUsers():
 
 def getEvents():
     events = []
+<<<<<<< Updated upstream
     cursor.execute("select e.name, v.name, e.datetime, e.capacity from events e join venues v on e.venue=v.id")
     result = cursor.fetchall()
     for item in result:
         EventRecord = namedtuple("EventRecord", "name, venue, datetime, capacity")
+=======
+    cursor.execute("select e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id")
+    result = cursor.fetchall()
+    for item in result:
+        EventRecord = namedtuple("EventRecord", "name, venue, date, capacity  description")
+>>>>>>> Stashed changes
         event = EventRecord._make(item)
         events.append(event)
     return events
