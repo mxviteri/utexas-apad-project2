@@ -23,7 +23,7 @@
             </div>
         </div>
         {% for event in events %}
-        <a href="#" class="list-group-item list-group-item-action col-sm-12">
+        <a href="./events/details/{{ event.id }}" class="list-group-item list-group-item-action col-sm-12">
             <div class="row">
                 <span class="col-sm-3">{{ event.name|title }}</span>
                 <span class="col-sm-3">{{event.venue|title}}</span>
@@ -34,10 +34,5 @@
         </a>
         {% endfor %}
     </div>
-</div>
-
-<div class="page-footer font-small blue">
-  <div class="footer-copyright text-center py-3">Created by Malik Ouda & Matt Viteri
-  </div>
 </div>
 {% endblock %}

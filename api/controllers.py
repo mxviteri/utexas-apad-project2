@@ -20,10 +20,10 @@ def getUsers():
 
 def getEvents():
     events = []
-    cursor.execute("select e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id")
+    cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id")
     result = cursor.fetchall()
     for item in result:
-        EventRecord = namedtuple("EventRecord", "name, venue, datetime, capacity, description")
+        EventRecord = namedtuple("EventRecord", "id, name, venue, datetime, capacity, description")
         event = EventRecord._make(item)
         events.append(event)
     return events

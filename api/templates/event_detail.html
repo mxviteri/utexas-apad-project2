@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block page_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-11 mt-5">
+            <h1>{{ event.name | title }}</h1>
+            <small>
+            {{ event.capacity }} spots left<br>
+            {{event.datetime }} | {{ event.venue | title }}
+            </small>
+        </div>
+        <div class="col-sm-1 mt-5">
+            <button class="btn btn-primary mt-3" type="submit">Join</button>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <p>{{ event.description | linebreaks }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
