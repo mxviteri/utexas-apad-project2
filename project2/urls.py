@@ -24,5 +24,6 @@ urlpatterns = [
     path('events/', views.getEvents),
     path('user', views.addUser),
     path('login', views.loginUser),
-    path('events/<int:eventId>', views.joinEvent)
+    path('events/<int:eventId>', views.joinEvent),
+    path('events/details/<int:eventId>', views.event_detail),
 ]

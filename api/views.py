@@ -12,6 +12,13 @@ def homePage(request):
     }
     return render(request, 'home.html', context)
 
+def event_detail(request, eventId):
+    event = controllers.getEvent(eventId)
+    context = {
+        'event': event
+    }
+    return render(request, 'event_detail.html', context)
+
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
 def getUsers(request):
