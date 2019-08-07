@@ -28,12 +28,13 @@ def getEvents(request):
 @require_http_methods(["POST"])
 def postUser(request):
     body = json.loads(request.body)
-    name = body["name"]
-    role = body["role"]
-    user = body["user"]
+
+    username = body["username"]
+    password = body["password"]
+    role = "admin" if body["isAdmin"] else "user"
 
     try:
-        result = controllers.addUser(name, role, user)
+        result = controllers.addUser(username, password, role)
         return JsonResponse({ "msg": result })
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)

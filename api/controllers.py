@@ -44,22 +44,12 @@ def findUser(name):
 	result = cursor.fetchone()
 	return result[1] if result else None
 
-def addUser(name, role, user):
-	if not isAdmin(user):
-		raise Exception('You are not allowed to perform this action')
-
-	found = findUser(name)
-	if found:
-		raise Exception('This user already exists')
-
-	cursor.execute("select id from roles where name = %s", (role,))
-	result = cursor.fetchone()
-
-	if not result:
-		raise Exception('You have inputted an invalid role')
-
-	roleNum = result[0]
-	cursor.execute("insert into users(user, role) values(%s, %s)", (name, roleNum))
+def addUser(username, password, role):
+	cursor.execute(
+		"""insert into users(username, password, role) values(%s, %s, 
+		(select id from roles where name = %s)
+		)""",
+		(username, password, role))
 	rows = cursor.rowcount
 
 	if not rows == 1:
@@ -67,5 +57,5 @@ def addUser(name, role, user):
 		raise Exception('User not added')
 
 	db.commit()
-	msg = 'User {} has been added successfully'.format(name)
+	msg = 'User {} has been added successfully'.format(username)
 	return msg
