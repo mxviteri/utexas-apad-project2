@@ -59,3 +59,21 @@ def addUser(username, password, role):
 	db.commit()
 	msg = 'User {} has been added successfully'.format(username)
 	return msg
+
+def loginUser(username, password):
+	cursor.execute(
+		"""
+		select u.id, u.username, r.name from users u
+		join roles r on u.role = r.id
+		where username = %s and password = %s
+		""", (username, password)
+	)
+	result = cursor.fetchone()
+	if not result:
+		return {}
+
+	return {
+		"id": result[0],
+		"username": result[1],
+		"role": result[2]
+	}
