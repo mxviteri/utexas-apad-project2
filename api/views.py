@@ -6,11 +6,14 @@ import json
 
 # Create your views here.
 def homePage(request):
+    return render(request, 'home.html')
+
+def events(request):
     events = controllers.getEvents()  
     context = {
         'events': events
     }
-    return render(request, 'home.html', context)
+    return render(request, 'events.html', context)
 
 def event_detail(request, eventId):
     event = controllers.getEvent(eventId)

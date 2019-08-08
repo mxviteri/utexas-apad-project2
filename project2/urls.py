@@ -20,7 +20,8 @@ import api.views as views
 urlpatterns = [
     ## PAGE ROUTES ##
     path('', views.homePage),
-    path('events/details/<int:eventId>', views.event_detail),
+    path('events/', views.events),
+    path('events/<int:eventId>', views.event_detail),
     ## API ROUTES ##
     path('api/users/', views.getUsers),
     path('api/events/', views.getEvents),
