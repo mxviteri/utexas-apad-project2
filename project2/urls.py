@@ -23,11 +23,12 @@ urlpatterns = [
     path('events/', views.events),
     path('events/<int:eventId>', views.event_detail),
     ## API ROUTES ##
-    path('api/users/', views.getUsers),
-    path('api/events/', views.getEvents),
-    path('api/user', views.addUser),
-    path('api/login', views.loginUser),
+    path('api/users', views.addUser),
+    path('api/users/all', views.getUsers),
+    path('api/users/login', views.loginUser),
+    path('api/users/<int:userId>/events', views.getUserEvents),
+    path('api/events', views.getEvents),
     path('api/events/<int:eventId>', views.joinEvent),
-    path('api/events/capacity/<int:eventId>', views.getEventCapacity),
-    path('api/events/participants/<int:eventId>', views.getEventParticipants)
+    path('api/events/<int:eventId>/capacity', views.getEventCapacity),
+    path('api/events/<int:eventId>/participants', views.getEventParticipants)
 ]

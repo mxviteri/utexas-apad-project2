@@ -114,3 +114,32 @@ def getParticipantsByEventId(eventId):
 	)
 	result = cursor.fetchall()
 	return result if result is not None else []
+
+def getEventsByUserId(userId):
+	cursor.execute(
+		"""
+			select
+			e.id, e.name, e.description, (
+				select name from venues where id = e.venue
+			), e.datetime
+			from usersEvents ue
+			join events e on ue.eventId = e.id
+			where ue.userId = %s
+		""", (userId,)
+	)
+	results = cursor.fetchall()
+	EventRecord = namedtuple("EventRecord", "id, name, description, venue, datetime")
+	eventMap = map(EventRecord._make, results)
+	events = []
+
+	for event in eventMap:
+		e = {
+			"id": event.id,
+			"name": event.name,
+			"description": event.description.decode("utf-8"),
+			"venue": event.venue,
+			"datetime": event.datetime
+		}
+		events.append(e)
+
+	return events

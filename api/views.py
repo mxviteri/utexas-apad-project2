@@ -4,7 +4,7 @@ from django.views.decorators.http import require_http_methods
 import api.controllers as controllers
 import json
 
-# Create your views here.
+#### TEMPLATES ####
 def homePage(request):
     return render(request, 'home.html')
 
@@ -94,5 +94,14 @@ def getEventParticipants(request, eventId):
     try:
         result = controllers.getParticipantsByEventId(eventId)
         return JsonResponse({ "participants": result })
+    except Exception as e:
+        return JsonResponse({ "msg": str(e) }, status=400)
+
+
+@require_http_methods(["GET"])
+def getUserEvents(request, userId):
+    try:
+        result = controllers.getEventsByUserId(userId)
+        return JsonResponse({ "events": result })
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)
