@@ -1,11 +1,22 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div class="container">
+<div id="home" class="container">
     <div class="row">
         <div class="col mt-5">
             <h1>Events ATX</h1>
             <p>Events ATX allows you to find, create, and join events around Austin, Texas</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-3">
+            <form class="form-group" action="/action/login" method="POST">
+                <input name="username" class="form-control mt-1" type="text" placeholder="Username" />
+                <input name="password" class="form-control mt-1" type="text" placeholder="Password" />
+                <br />
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
         </div>
     </div>
 </div>

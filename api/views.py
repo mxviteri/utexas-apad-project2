@@ -3,15 +3,9 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 import api.controllers as controllers
 import json
-import ast
 
 #### TEMPLATES ####
 def homePage(request):
-    # KEEP THIS >>>
-    # if 'user' in request.COOKIES:
-    #     value = request.COOKIES['user']
-    #     user = ast.literal_eval(value)
-
     return render(request, 'home.html')
 
 def events(request):
@@ -38,6 +32,7 @@ def handleLogin(request):
     if len(result) > 0:
         response.set_cookie('user', result)
     else:
+        response = HttpResponseRedirect('/')
         response.set_cookie('user', {})
 
     return response
