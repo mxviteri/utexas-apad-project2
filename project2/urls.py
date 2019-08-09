@@ -24,6 +24,7 @@ urlpatterns = [
     path('events/<int:eventId>', views.event_detail),
     ## PAGE ACTIONS ###
     path('action/login', views.handleLogin),
+    path('action/logout', views.handleLogout),
     ## API ROUTES ##
     path('api/users', views.addUser),
     path('api/users/all', views.getUsers),

@@ -37,6 +37,11 @@ def handleLogin(request):
 
     return response
 
+def handleLogout(request):
+    response = HttpResponseRedirect('/')
+    response.set_cookie('user', {})
+    return response
+
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
 def getUsers(request):
