@@ -9,7 +9,14 @@ def homePage(request):
     return render(request, 'home.html')
 
 def events(request):
-    events = controllers.getEvents()  
+    events = controllers.getEvents()
+
+    if request.method == "POST":
+        searchTerm = request.POST["search"]
+
+        if searchTerm:
+            events = list(filter(lambda e: e.name == searchTerm, events))
+
     context = {
         'events': events
     }
