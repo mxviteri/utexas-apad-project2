@@ -22,6 +22,8 @@ urlpatterns = [
     path('', views.homePage),
     path('events/', views.events),
     path('events/<int:eventId>', views.event_detail),
+    ## PAGE ACTIONS ###
+    path('action/login', views.handleLogin),
     ## API ROUTES ##
     path('api/users', views.addUser),
     path('api/users/all', views.getUsers),

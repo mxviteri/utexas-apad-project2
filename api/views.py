@@ -1,11 +1,15 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 import api.controllers as controllers
 import json
 
 #### TEMPLATES ####
 def homePage(request):
+    if 'user' in request.COOKIES:
+        value = request.COOKIES['user']
+        print('WE GOT THE COOKIE', value)
+
     return render(request, 'home.html')
 
 def events(request):
@@ -22,6 +26,14 @@ def event_detail(request, eventId):
     }
     return render(request, 'event_detail.html', context)
 
+#### PAGE ACTIONS / REDIRECTS ####
+
+def handleLogin(request):
+    response = HttpResponseRedirect('/')
+    response.set_cookie('user', 'test-user')
+
+    return response
+
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
 def getUsers(request):
@@ -31,7 +43,21 @@ def getUsers(request):
 
 @require_http_methods(["GET"])
 def getEvents(request):
-    events = controllers.getEvents()
+    eventsTuple = controllers.getEvents()
+    events = []
+
+    for event in eventsTuple:
+	    e = {
+			"id": event.id,
+			"name": event.name,
+			"venue": event.venue,
+			"datetime": event.datetime,
+            "capacity": event.capacity,
+            "description": event.description
+		}
+	    events.append(e)
+
+
     return JsonResponse({ "data": events })
 
 

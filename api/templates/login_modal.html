@@ -8,12 +8,13 @@
         </button>
       </div>
       <div class="modal-body">
-        <input class="form-control col-sm-3" type="text" placeholder="Username">
-        <input class="form-control col-sm-3" type="text" placeholder="Password">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Login</button>
+        <form class="form-group" action="/action/login" method="POST">
+            <input class="form-control mt-1" type="text" placeholder="Username">
+            <input class="form-control mt-1" type="text" placeholder="Password">
+            <br />
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
       </div>
     </div>
   </div>
