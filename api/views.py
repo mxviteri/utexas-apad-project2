@@ -12,6 +12,7 @@ def homePage(request):
 
 def events(request):
     events = controllers.getEvents()
+    venues = controllers.getVenues()
 
     if request.method == "POST":
         searchTerm = request.POST["search"]
@@ -20,7 +21,8 @@ def events(request):
             events = list(filter(lambda e: e.name == searchTerm, events))
 
     context = {
-        'events': events
+        'events': events,
+        'venues': venues
     }
     return render(request, 'events.html', context)
 
@@ -110,7 +112,6 @@ def handleLeaveEvent(request, eventId):
             }
         return render(request, 'event_detail.html', context)
     return HttpResponseRedirect('/events/' + str(eventId))
-        
 
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])

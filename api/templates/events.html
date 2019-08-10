@@ -12,7 +12,11 @@
     <form class="form-group row" action="/events/" method="POST">
         <input class="form-control col-sm-3" type="text" name="search" placeholder="Search">
         <button type="submit" class="btn btn-primary col-sm-1 ml-2">Search</button>
+        <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#createEventModal">
+            Create Event
+        </button>
     </form>
+
     <div class="list-group list-group-flush row">
         <div class="list-group-item col-sm-12 bg-secondary text-white">
             <div class="row">
@@ -32,5 +36,35 @@
         </a>
         {% endfor %}
     </div>
+</div>
+
+<!-- Create Event Modal -->
+<div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="createEventLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createEventLabel">Create Event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-group" action="/action/login" method="POST">
+            <input name="name" class="form-control mt-1" type="text" placeholder="Name" />
+            <textarea name="description" class="form-control mt-1" rows="3" placeholder="Description"></textarea>
+            <select class="form-control mt-1" id="selVenue" name="venueId">
+                {% for v in venues %}
+                    <option value={{v.id}}>{{v.name}}</option>
+                {% endfor %}
+            </select>
+            <input name="date" type="datetime-local" class="form-control mt-1" />
+            <input name="capacity" class="form-control mt-1" type="number" placeholder="Capacity" />
+            <br>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

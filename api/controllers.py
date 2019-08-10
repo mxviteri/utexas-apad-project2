@@ -28,6 +28,18 @@ def getEvents():
         events.append(event)
     return events
 
+def getVenues():
+	venues = []
+	cursor.execute("select id, name from venues")
+	results = cursor.fetchall()
+	for r in results:
+		venue = {
+			"id": r[0],
+			"name": r[1]
+		}
+		venues.append(venue)
+	return venues
+
 def getEvent(eventId):
     cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
     result = cursor.fetchone()
