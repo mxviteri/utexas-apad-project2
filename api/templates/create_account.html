@@ -2,7 +2,9 @@
 
 {% block page_content %}
 <div class="container">
-
+    {% if warning %}
+    <div class="alert alert-danger"> {{ warning }} </div>
+    {% endif %}
     {% if not current_user %}
     <div class="mt-2">
         <h1 class="display-4 m-auto">Create an Account</h1><br>

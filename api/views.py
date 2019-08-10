@@ -53,10 +53,18 @@ def handleLogout(request):
     return response
 
 def handleCreateAccount(request):
+    try:
+        password, username = sorted(list(request.POST.values()))
+        controllers.addUser(username, password, 'user')
+    except Exception as e:
+        context = { 'warning': 'Could not create account. Try again' }
+        return render(request, 'create_account.html', context)
+    
     response = HttpResponseRedirect('/')
-    password, username = sorted(list(request.POST.values()))
-    controllers.addUser(username, password, 'user')
     return response
+
+def handleJoinEvent(request):
+    response = HttpResponseRedirect('/')
 
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
