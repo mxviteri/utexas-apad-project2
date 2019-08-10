@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div id="home" class="container">
-    <div class="row">
-        <div class="col m-auto">
-            <h1 class="display-2">Events ATX</h1>
-            <p class="display-4">Events ATX allows you to find, create, and join events around Austin, Texas</p>
-        </div>
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-2">Events ATX</h1>
+        <p class="display-4">Events ATX allows you to find, create, and join events around Austin, Texas</p>
     </div>
+</div>
+<div class="container">
     {% if not current_user %}
     <div class="row">
         <div class="col m-auto">
+            <h1 class="display-4 mb-3">Log In</h1>
             <form class="form-group" action="/action/login" method="POST">
                 <input name="username" class="form-control mt-1" type="text" placeholder="Username" />
                 <input name="password" class="form-control mt-1" type="password" placeholder="Password" />

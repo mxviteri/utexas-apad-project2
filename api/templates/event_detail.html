@@ -6,7 +6,7 @@
     {% endif %}
     <div class="row">
         <div class="col-sm-10 mt-5">
-            <h1>{{ event.name | title }}</h1>
+            <h1 class="display-3">{{ event.name | title }}</h1>
             <small>
             {{ event.capacity }} spots<br>
             {{event.datetime }} | {{ event.venue | title }}
@@ -37,6 +37,7 @@
         </div>
     </div>
     <hr>
+    <h2>Users in this event</h1>
     <div class="row">
         <div class="col-sm-12">
             {% for user in users %}
