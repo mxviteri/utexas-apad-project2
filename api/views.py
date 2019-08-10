@@ -74,15 +74,23 @@ def handleCreateAccount(request):
     try:
         password, username = sorted(list(request.POST.values()))
         controllers.addUser(username, password, 'user')
-    except Exception as e:
+    except:
         context = { 'warning': 'Could not create account. Try again' }
         return render(request, 'create_account.html', context)
     
     response = HttpResponseRedirect('/')
     return response
 
-def handleJoinEvent(request):
-    response = HttpResponseRedirect('/')
+def handleJoinEvent(request, eventId):
+    try:
+        controllers.joinEvent(userId=request.USER['id'], eventId=eventId)
+    except:
+        event = controllers.getEvent(eventId)
+        context = { 
+            'warning': 'Could not join event. Please try again',
+            'event': event }
+        return render(request, 'event_detail.html', context)
+    return HttpResponseRedirect('/events/' + str(eventId))
 
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
