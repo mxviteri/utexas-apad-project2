@@ -22,9 +22,11 @@ urlpatterns = [
     path('', views.homePage),
     path('events/', views.events),
     path('events/<int:eventId>', views.event_detail),
+    path('create_account/', views.create_account),
     ## PAGE ACTIONS ###
     path('action/login', views.handleLogin),
     path('action/logout', views.handleLogout),
+    path('action/create_account', views.handleCreateAccount),
     ## API ROUTES ##
     path('api/users', views.addUser),
     path('api/users/all', views.getUsers),

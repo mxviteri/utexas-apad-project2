@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="container">
+
+    {% if not current_user %}
+    <div class="mt-2">
+        <h1 class="display-4 m-auto">Create an Account</h1><br>
+        <form class="form-group" action="/action/create_account" method="POST">
+            <input name="username" class="form-control mt-1" type="text" placeholder="Username" />
+            <input name="password" class="form-control mt-1" type="password" placeholder="Password" />
+            <br>
+            <button type="submit" class="btn btn-primary">Create Account</button>
+            <a href="/" class="m-auto">Have an account? Log in here</a>
+        </form>
+    </div>
+    {% else %}
+    <div class="mt-5 mx-5">
+        <a class="display-4" href="/">You already have an account. Go back</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

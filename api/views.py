@@ -29,6 +29,9 @@ def event_detail(request, eventId):
     }
     return render(request, 'event_detail.html', context)
 
+def create_account(request):
+    return render(request, 'create_account.html')
+
 #### PAGE ACTIONS / REDIRECTS ####
 
 def handleLogin(request):
@@ -47,6 +50,12 @@ def handleLogin(request):
 def handleLogout(request):
     response = HttpResponseRedirect('/')
     response.set_cookie('user', {})
+    return response
+
+def handleCreateAccount(request):
+    response = HttpResponseRedirect('/')
+    password, username = sorted(list(request.POST.values()))
+    controllers.addUser(username, password, 'user')
     return response
 
 #### REQUEST HANDLERS ####

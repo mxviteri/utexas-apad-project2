@@ -13,9 +13,8 @@
         <div class="col m-auto">
             <form class="form-group" action="/action/login" method="POST">
                 <input name="username" class="form-control mt-1" type="text" placeholder="Username" />
-                <input name="password" class="form-control mt-1" type="text" placeholder="Password" />
+                <input name="password" class="form-control mt-1" type="password" placeholder="Password" />
                 <br>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Login</button>
                 <a href="/create_account" class="m-auto">Don't have an account? Create one here</a>
             </form>
@@ -24,7 +23,7 @@
     {% else %}
     <div class="row">
         <div class="col">
-            <h1 class="display-4 text-primary">Welcome, {{current_user.username }}!</h1>
+            <h1 class="display-4 text-success">Welcome, {{current_user.username }}!</h1>
         </div>
     </div>
     {% endif %}
