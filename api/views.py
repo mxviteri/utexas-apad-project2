@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
-import api.controllers as controllers
+from datetime import datetime
 import json
+
+import api.controllers as controllers
 
 #### TEMPLATES ####
 def homePage(request):
@@ -31,6 +33,22 @@ def event_detail(request, eventId):
 
 def create_account(request):
     return render(request, 'create_account.html')
+
+def my_events(request):
+    user = request.USER
+    if not user:
+        return HttpResponseRedirect('/')
+
+    userId = user["id"]
+    events = controllers.getEventsByUserId(userId)
+    upcoming = list(filter(lambda e: e["datetime"] >= datetime.now(), events))
+    past = list(filter(lambda e: e["datetime"] < datetime.now(), events))
+    eventDict = {
+        "upcoming": upcoming,
+        "past": past
+    }
+
+    return render(request, 'my_events.html', { "events": eventDict })
 
 #### PAGE ACTIONS / REDIRECTS ####
 
