@@ -86,6 +86,11 @@ def loginUser(username, password):
 	}
 
 def joinEvent(userId, eventId):
+	(total, capacity) = currentParticipantTotal(eventId)
+
+	if total >= capacity:
+		raise Exception('The event with id: {}, is at capacity'.format(eventId))
+
 	cursor.execute(
 		"insert into usersEvents(userId, eventId) values(%s, %s)", (userId, eventId)
 	)
@@ -143,3 +148,22 @@ def getEventsByUserId(userId):
 		events.append(e)
 
 	return events
+
+def currentParticipantTotal(eventId):
+	cursor.execute(
+		"""
+			SELECT COUNT(ue.userId) as total, e.capacity
+			FROM events e
+			LEFT JOIN usersEvents ue on e.id = ue.eventId
+			WHERE e.id = %s
+			GROUP BY ue.eventId
+		""", (eventId,)
+	)
+	TotalRecord = namedtuple('TotalRecord','total, capacity')
+	result = cursor.fetchone()
+
+	if not result:
+		raise Exception('The event with id: {}, could not be found'.format(eventId))
+
+	record = TotalRecord._make(result)
+	return (record.total, record.capacity)
