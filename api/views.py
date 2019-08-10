@@ -54,6 +54,9 @@ def my_events(request):
 
     return render(request, 'my_events.html', { "events": eventDict })
 
+def admin(request):
+    return render(request, 'admin.html')
+
 #### PAGE ACTIONS / REDIRECTS ####
 
 def handleLogin(request):
