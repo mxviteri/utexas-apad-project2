@@ -104,6 +104,20 @@ def joinEvent(userId, eventId):
 	msg = "User has successfully joined the event"
 	return msg
 
+def leaveEvent(userId, eventId):
+	cursor.execute(
+		"delete from usersEvents where userId = %s and eventId = %s", (userId, eventId)
+	)
+
+	rows = cursor.rowcount
+	if not rows == 1:
+		db.rollback()
+		raise Exception('User could not leave event')
+
+	db.commit()
+	msg = "User has left the event"
+	return msg
+
 def getCapacityByEventId(eventId):
 	cursor.execute("select capacity from events where id = %s", (eventId,))
 	result = cursor.fetchone()
@@ -118,7 +132,11 @@ def getParticipantsByEventId(eventId):
 		""", (eventId,)
 	)
 	result = cursor.fetchall()
-	return result if result is not None else []
+	if result:
+		users = []
+		for item in result:
+			users.append(item[0])
+	return users
 
 def getEventsByUserId(userId):
 	cursor.execute(

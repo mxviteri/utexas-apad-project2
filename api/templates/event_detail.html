@@ -13,18 +13,18 @@
             </small>
         </div>
         {% if current_user %}
-            {% if current_user in users %}
-                <div class="col-sm-2 mt-5">
-                    <form action="/action/join_event/{{event.id}}" method="POST">
-                    <input type="hidden" name="eventId" value="{{ event.id }}">
-                    <button class="btn btn-primary mt-3" type="submit">Join Event</button>
-                    </form>
-                </div>
-            {% else %}
+            {% if current_user.username in users %}
                 <div class="col-sm-2 mt-5">
                     <form action="/action/leave_event/{{event.id}}" method="POST">
                     <input type="hidden" name="eventId" value="{{ event.id }}">
                     <button class="btn btn-danger mt-3" type="submit">Leave Event</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="col-sm-2 mt-5">
+                    <form action="/action/join_event/{{event.id}}" method="POST">
+                    <input type="hidden" name="eventId" value="{{ event.id }}">
+                    <button class="btn btn-primary mt-3" type="submit">Join Event</button>
                     </form>
                 </div>
             {% endif %}
@@ -40,7 +40,7 @@
     <div class="row">
         <div class="col-sm-12">
             {% for user in users %}
-            <p>{{ user.0 }}
+            <p>{{ user }}
             {% endfor %}
         </div>
     </div>

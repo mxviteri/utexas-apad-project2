@@ -77,7 +77,7 @@ def handleCreateAccount(request):
         password, username = sorted(list(request.POST.values()))
         controllers.addUser(username, password, 'user')
     except:
-        context = { 'warning': 'Could not create account. Try again' }
+        context = { 'warning': 'Could not create account. Try again.' }
         return render(request, 'create_account.html', context)
     
     response = HttpResponseRedirect('/')
@@ -90,15 +90,27 @@ def handleJoinEvent(request, eventId):
         event = controllers.getEvent(eventId)
         users = controllers.getParticipantsByEventId(eventId)
         context = { 
-            'warning': 'Could not join event. Please try again',
+            'warning': 'Could not join event.',
             'event': event,
             'users': users
             }
         return render(request, 'event_detail.html', context)
     return HttpResponseRedirect('/events/' + str(eventId))
 
-    def handleLeaveEvent(request):
-        pass
+def handleLeaveEvent(request, eventId):
+    try:
+        controllers.leaveEvent(userId=request.USER['id'], eventId=eventId)
+    except:
+        event = controllers.getEvent(eventId)
+        users = controllers.getParticipantsByEventId(eventId)
+        context = { 
+            'warning': 'Could not leave event.',
+            'event': event,
+            'users': users
+            }
+        return render(request, 'event_detail.html', context)
+    return HttpResponseRedirect('/events/' + str(eventId))
+        
 
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
