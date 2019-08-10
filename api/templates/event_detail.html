@@ -5,25 +5,43 @@
     <div class="alert alert-danger"> {{ warning }} </div>
     {% endif %}
     <div class="row">
-        <div class="col-sm-11 mt-5">
+        <div class="col-sm-10 mt-5">
             <h1>{{ event.name | title }}</h1>
             <small>
+            {{ event.capacity }} spots<br>
             {{event.datetime }} | {{ event.venue | title }}
             </small>
         </div>
         {% if current_user %}
-        <div class="col-sm-1 mt-5">
-            <form action="/action/join_event/{{event.id}}" method="POST">
-            <input type="hidden" name="eventId" value="{{ event.id }}">
-            <button class="btn btn-primary mt-3" type="submit">Join</button>
-            </form>
-        </div>
+            {% if current_user in users %}
+                <div class="col-sm-2 mt-5">
+                    <form action="/action/join_event/{{event.id}}" method="POST">
+                    <input type="hidden" name="eventId" value="{{ event.id }}">
+                    <button class="btn btn-primary mt-3" type="submit">Join Event</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="col-sm-2 mt-5">
+                    <form action="/action/leave_event/{{event.id}}" method="POST">
+                    <input type="hidden" name="eventId" value="{{ event.id }}">
+                    <button class="btn btn-danger mt-3" type="submit">Leave Event</button>
+                    </form>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
     <hr>
     <div class="row">
         <div class="col-sm-12">
             <p>{{ event.description | linebreaks }}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            {% for user in users %}
+            <p>{{ user.0 }}
+            {% endfor %}
         </div>
     </div>
 </div>

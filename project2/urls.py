@@ -29,6 +29,7 @@ urlpatterns = [
     path('action/logout', views.handleLogout),
     path('action/create_account', views.handleCreateAccount),
     path('action/join_event/<int:eventId>', views.handleJoinEvent),
+    path('action/leave_event/<int:eventId>', views.handleLeaveEvent),
     ## API ROUTES ##
     path('api/users', views.addUser),
     path('api/users/all', views.getUsers),

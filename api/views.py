@@ -26,8 +26,10 @@ def events(request):
 
 def event_detail(request, eventId):
     event = controllers.getEvent(eventId)
+    users = controllers.getParticipantsByEventId(eventId)
     context = {
-        'event': event
+        'event': event,
+        'users': users
     }
     return render(request, 'event_detail.html', context)
 
@@ -86,11 +88,17 @@ def handleJoinEvent(request, eventId):
         controllers.joinEvent(userId=request.USER['id'], eventId=eventId)
     except:
         event = controllers.getEvent(eventId)
+        users = controllers.getParticipantsByEventId(eventId)
         context = { 
             'warning': 'Could not join event. Please try again',
-            'event': event }
+            'event': event,
+            'users': users
+            }
         return render(request, 'event_detail.html', context)
     return HttpResponseRedirect('/events/' + str(eventId))
+
+    def handleLeaveEvent(request):
+        pass
 
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
