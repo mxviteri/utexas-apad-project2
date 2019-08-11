@@ -136,6 +136,7 @@ def getCapacityByEventId(eventId):
 	return result[0] if result is not None else None
 
 def getParticipantsByEventId(eventId):
+	users = []
 	cursor.execute(
 		"""
 			select u.username from usersEvents ue
@@ -145,7 +146,6 @@ def getParticipantsByEventId(eventId):
 	)
 	result = cursor.fetchall()
 	if result:
-		users = []
 		for item in result:
 			users.append(item[0])
 	return users
@@ -197,3 +197,17 @@ def currentParticipantTotal(eventId):
 
 	record = TotalRecord._make(result)
 	return (record.total, record.capacity)
+
+def createEvent(name, description, venueId, datetime, capacity):
+	cursor.execute(
+		"""insert into events(name, description, venue, datetime, capacity) values(%s, %s, %s, %s, %s)""",
+		(name, description, venueId, datetime, capacity))
+	rows = cursor.rowcount
+
+	if not rows == 1:
+		db.rollback()
+		raise Exception('Event not created')
+
+	db.commit()
+	msg = "Event {} has been added successfully".format(name)
+	return msg

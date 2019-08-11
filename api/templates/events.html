@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_content %}
+{{name}} {{description}} {{venue}} {{datetime}} {{capacity}}
 <div class="jumbotron">
     <div class="container">
         <h1 class="display-3">Events</h1> 
@@ -9,6 +10,11 @@
 </div>
 
 <div class="container">
+    {% if warning %}
+    <div class="alert alert-danger">
+        {{ warning }}
+    </div>
+    {% endif %}
     <form class="form-group row" action="/events/" method="POST">
         <input class="form-control col-sm-3" type="text" name="search" placeholder="Search">
         <button type="submit" class="btn btn-primary col-sm-1 ml-2">Search</button>
@@ -26,7 +32,7 @@
             </div>
         </div>
         {% for event in events %}
-        <a href="./{{ event.id }}" class="list-group-item list-group-item-action col-sm-12">
+        <a href="/events/{{ event.id }}" class="list-group-item list-group-item-action col-sm-12">
             <div class="row">
                 <span class="col-sm-4">{{ event.name|title }}</span>
                 <span class="col-sm-4">{{event.venue|title}}</span>
@@ -49,7 +55,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="form-group" action="/action/login" method="POST">
+        <form class="form-group" action="/action/create_event" method="POST">
             <input name="name" class="form-control mt-1" type="text" placeholder="Name" />
             <textarea name="description" class="form-control mt-1" rows="3" placeholder="Description"></textarea>
             <select class="form-control mt-1" id="selVenue" name="venueId">

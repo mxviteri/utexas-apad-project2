@@ -116,6 +116,26 @@ def handleLeaveEvent(request, eventId):
         return render(request, 'event_detail.html', context)
     return HttpResponseRedirect('/events/' + str(eventId))
 
+def handleCreateEvent(request):
+    try:
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        venueId = request.POST.get("venueId")
+        datetime = request.POST.get("date")
+        capacity = request.POST.get("capacity")
+        controllers.createEvent(name, description, venueId, datetime, capacity)
+    except:
+        events = controllers.getEvents()
+        venues = controllers.getVenues()
+        context = { 
+            'warning': 'Could not create event. Please try again.',
+            'events': events,
+            'venues': venues
+            }
+        return render(request, 'events.html', context)
+
+    return HttpResponseRedirect('/events/')
+
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
 def getUsers(request):
