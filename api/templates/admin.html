@@ -7,8 +7,23 @@
     </div>
 </div>
 <div class="container">
-    <a href="/admin/venues/"><h3>Click here to add / delete venues</h3></a>
-    <a href="/admin/events/"><h3>Click here to delete an event</h3></a>
-    <a href="/admin/users/"><h3>Click here to delete a user</h3></a>
+    <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#venues">Venues</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#events">Events</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#users">Users</a></li>
+    </ul>
+    <div class="container-fluid">
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="venues">
+                <div class="alert alert-info">Venues</div>
+            </div>
+            <div class="tab-pane fade in active" id="events">
+                <div class="alert alert-info">Events</div>
+            </div>
+            <div class="tab-pane fade in active" id="users">
+                <div class="alert alert-info">Users</div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
