@@ -1,0 +1,25 @@
+<div class="list-group list-group-flush row ml-auto mt-2">
+    <div class="list-group-item col-sm-12 bg-secondary text-white">
+        <div class="row">
+            <span class="col">Id</span>
+            <span class="col">Username</span>
+            <span class="col">Actions</span>
+        </div>
+    </div>
+    {% for user in users %}
+    <div class="list-group-item list-group-item col-sm-12">
+        <div class="row">
+            <span class="col">{{user.id|title }}</span>
+            <span class="col">{{user.username|title}}</span>
+            <span class="col">
+                <form class="form-group" action="/action/delete_user" method="POST">
+                    <input type="hidden" name="id" value={{user.id}}>
+                    <button class="btn">
+                        <i style="color: red;" class="far fa-trash-alt"></i>
+                    </button>
+                </form>
+            </span>
+        </div>
+    </div>
+    {% endfor %}
+</div>

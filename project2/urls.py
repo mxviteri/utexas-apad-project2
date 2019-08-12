@@ -34,6 +34,7 @@ urlpatterns = [
     path('action/leave_event/<int:eventId>', views.handleLeaveEvent),
     path('action/create_event', views.handleCreateEvent),
     path('action/delete_user', views.handleUserDelete),
+    path('action/delete_event', views.handleEventDelete),
     ## API ROUTES ##
     path('api/users', views.addUser),
     path('api/users/all', views.getUsers),

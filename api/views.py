@@ -153,6 +153,15 @@ def handleUserDelete(request):
         print(e)
     
     return HttpResponseRedirect('/admin/')
+
+def handleEventDelete(request):
+    try:
+        eventId = request.POST.get("id")
+        controllers.deleteEvent(eventId)
+    except Exception as e:
+        print(e)
+    
+    return HttpResponseRedirect('/admin/#events')
     
 
 #### REQUEST HANDLERS ####

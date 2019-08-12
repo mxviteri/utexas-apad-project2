@@ -8,45 +8,19 @@
 </div>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#venues">Venues</a></li>
+        <li class="nav-item active"><a class="nav-link active" data-toggle="tab" href="#venues">Venues</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#events">Events</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#users">Users</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="venues">
+        <div class="tab-pane fade show active" id="venues">
             {% include 'admin/venues.html' %}
         </div>
-        <div class="tab-pane fade in active" id="events">
-            <div class="alert alert-info">Events</div>
+        <div class="tab-pane fade" id="events">
+            {% include 'admin/events.html' %}
         </div>
-        <div class="tab-pane fade in active" id="users">
-            <div class="container">
-                <div class="list-group list-group-flush row">
-                    <div class="list-group-item col-sm-8 bg-secondary text-white">
-                        <div class="row">
-                            <span class="col-sm-3">Id</span>
-                            <span class="col-sm-3">Username</span>
-                            <span class="col-sm-2">Actions</span>
-                        </div>
-                    </div>
-                    {% for user in users %}
-                    <div class="list-group-item list-group-item-action col-sm-8">
-                        <div class="row">
-                            <span class="col-sm-3">{{user.id|title }}</span>
-                            <span class="col-sm-3">{{user.username|title}}</span>
-                            <span class="col-sm-2">
-                                <form class="form-group" action="/action/delete_user" method="POST">
-                                    <input type="hidden" name="id" value={{user.id}}>
-                                    <button class="btn">
-                                        <i style="color: red;" class="far fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+        <div class="tab-pane fade" id="users">
+            {% include 'admin/users.html' %}
         </div>
     </div>
 </div>

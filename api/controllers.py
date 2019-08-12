@@ -229,3 +229,17 @@ def createEvent(name, description, venueId, datetime, capacity):
 	db.commit()
 	msg = "Event {} has been added successfully".format(name)
 	return msg
+
+def deleteEvent(eventId):
+    cursor.execute(
+		"""delete from events where id = %s""",
+        (eventId,))
+    rows = cursor.rowcount
+
+    if not rows == 1:
+        db.rollback()
+        raise Exception('Event not deleted')
+
+    db.commit()
+    msg = "Event has been successfully deleted"
+    return msg
