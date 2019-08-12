@@ -20,7 +20,33 @@
             <div class="alert alert-info">Events</div>
         </div>
         <div class="tab-pane fade in active" id="users">
-            <div class="alert alert-info">Users</div>
+            <div class="container">
+                <div class="list-group list-group-flush row">
+                    <div class="list-group-item col-sm-8 bg-secondary text-white">
+                        <div class="row">
+                            <span class="col-sm-3">Id</span>
+                            <span class="col-sm-3">Username</span>
+                            <span class="col-sm-2">Actions</span>
+                        </div>
+                    </div>
+                    {% for user in users %}
+                    <div class="list-group-item list-group-item-action col-sm-8">
+                        <div class="row">
+                            <span class="col-sm-3">{{user.id|title }}</span>
+                            <span class="col-sm-3">{{user.username|title}}</span>
+                            <span class="col-sm-2">
+                                <form class="form-group" action="/action/delete_user" method="POST">
+                                    <input type="hidden" name="id" value={{user.id}}>
+                                    <button class="btn">
+                                        <i style="color: red;" class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 </div>

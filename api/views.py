@@ -55,7 +55,12 @@ def my_events(request):
     return render(request, 'my_events.html', { "events": eventDict })
 
 def admin(request):
-    return render(request, 'admin.html')
+    users = controllers.getUsers()
+    context = {
+        "users": users
+    }
+
+    return render(request, 'admin.html', context)
 
 #### PAGE ACTIONS / REDIRECTS ####
 
@@ -136,12 +141,31 @@ def handleCreateEvent(request):
 
     return HttpResponseRedirect('/events/')
 
+def handleUserDelete(request):
+    try:
+        userId = request.POST.get("id")
+        controllers.deleteUser(userId)
+    except Exception as e:
+        print(e)
+    
+    return HttpResponseRedirect('/admin/')
+    
+
 #### REQUEST HANDLERS ####
 @require_http_methods(["GET"])
 def getUsers(request):
 	users = controllers.getUsers()
 	return JsonResponse({ "data": users })
 
+@require_http_methods(["DELETE"])
+def deleteUser(request):
+    try:
+        body = json.loads(request.body)
+        userId = body.get("id")
+        msg = controllers.deleteUser(userId)
+        return JsonResponse({ "msg": msg })
+    except Exception as e:
+        return JsonResponse({ "msg": e }, status=400)
 
 @require_http_methods(["GET"])
 def getEvents(request):

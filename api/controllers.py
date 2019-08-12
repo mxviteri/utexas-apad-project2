@@ -14,9 +14,11 @@ db = pymysql.connect(
 cursor = db.cursor()
 
 def getUsers():
-	cursor.execute("select * from users")
-	users = cursor.fetchall()
-	return users
+	cursor.execute("select id, username, role from users")
+	result = cursor.fetchall()
+	UserRecord = namedtuple("UserRecord", "id, username, role")
+	users = map(UserRecord._make, result)
+	return list(users)
 
 def getEvents():
     events = []
@@ -77,6 +79,20 @@ def addUser(username, password, role):
 
 	db.commit()
 	msg = "User {} has been added successfully".format(username)
+	return msg
+
+def deleteUser(userId):
+	cursor.execute(
+		"delete from users where id = %s", (userId,)
+	)
+	rows = cursor.rowcount
+	
+	if not rows == 1:
+		db.rollback()
+		raise Exception('User not deleted')
+
+	db.commit()
+	msg = "User {} has been deleted successfully".format(userId)
 	return msg
 
 def loginUser(username, password):
