@@ -55,6 +55,11 @@ def my_events(request):
     return render(request, 'my_events.html', { "events": eventDict })
 
 def admin(request):
+    user = request.USER
+    userRole = user.get("role")
+    if not userRole == "admin":
+        return HttpResponseRedirect('/')
+
     users = controllers.getUsers()
     venues = controllers.getVenues()
     events = controllers.getEvents()
