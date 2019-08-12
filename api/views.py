@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from datetime import datetime
@@ -55,6 +55,11 @@ def my_events(request):
     return render(request, 'my_events.html', { "events": eventDict })
 
 def admin(request):
+    user = request.USER
+    userRole = user.get("role")
+    if not userRole == "admin":
+        return HttpResponseRedirect('/')
+
     users = controllers.getUsers()
     venues = controllers.getVenues()
     events = controllers.getEvents()
@@ -64,7 +69,7 @@ def admin(request):
         "events": events
     }
 
-    return render(request, 'admin.html', context)
+    return render(request, 'admin/dashboard.html', context)
 
 #### PAGE ACTIONS / REDIRECTS ####
 
@@ -154,7 +159,7 @@ def handleCreateVenue(request):
     except Exception as e:
         print('ERROR', e)
 
-    return HttpResponseRedirect('/admin/', tab="venue")
+    return redirect(reverse('admin') + '?tab=venues')
 
 def handleUserDelete(request):
     try:
@@ -163,7 +168,7 @@ def handleUserDelete(request):
     except Exception as e:
         print(e)
     
-    return HttpResponseRedirect('/admin/')
+    return redirect(reverse('admin') + '?tab=users')
 
 def handleEventDelete(request):
     try:
@@ -172,7 +177,8 @@ def handleEventDelete(request):
     except Exception as e:
         print(e)
     
-    return HttpResponseRedirect('/admin/#events')
+    return redirect(reverse('admin') + '?tab=events')
+
 def handleVenueDelete(request):
     try:
         venueId = request.POST.get("id")
@@ -180,7 +186,7 @@ def handleVenueDelete(request):
     except Exception as e:
         print(e)
     
-    return HttpResponseRedirect('/admin/')
+    return redirect(reverse('admin') + '?tab=venues')
     
 
 #### REQUEST HANDLERS ####
