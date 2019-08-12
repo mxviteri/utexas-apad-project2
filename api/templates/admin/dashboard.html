@@ -24,19 +24,4 @@
         </div>
     </div>
 </div>
-
-<script>
-(() => {
-    const query = window.location.search.slice(1)
-    const pairs = query ? query.split('&') : []
-    const obj = {}
-    pairs.forEach(pair => {
-        [key, val] = pair.split('=')
-        obj[key] = val
-    })
-    const tab = obj.tab
-    $(`[href="#${tab}"]`).tab('show')
-    //console.log('opening admin', tab)
-})()
-</script>
 {% endblock %}
