@@ -145,6 +145,17 @@ def handleCreateEvent(request):
 
     return HttpResponseRedirect('/events/')
 
+def handleCreateVenue(request):
+    try:
+        name = request.POST.get("name")
+        venueOpen = request.POST.get("open")
+        venueClose = request.POST.get("close")
+        controllers.createVenue(name, venueOpen, venueClose)
+    except Exception as e:
+        print('ERROR', e)
+
+    return HttpResponseRedirect('/admin/', tab="venue")
+
 def handleUserDelete(request):
     try:
         userId = request.POST.get("id")
@@ -162,6 +173,14 @@ def handleEventDelete(request):
         print(e)
     
     return HttpResponseRedirect('/admin/#events')
+def handleVenueDelete(request):
+    try:
+        venueId = request.POST.get("id")
+        controllers.deleteVenue(venueId)
+    except Exception as e:
+        print(e)
+    
+    return HttpResponseRedirect('/admin/')
     
 
 #### REQUEST HANDLERS ####

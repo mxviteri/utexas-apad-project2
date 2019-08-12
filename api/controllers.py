@@ -44,6 +44,35 @@ def getVenues():
 		venues.append(venue)
 	return venues
 
+def createVenue(name, venueOpen, venueClose):
+	cursor.execute(
+		"insert into venues(name, open, close) values(%s, %s, %s)",
+		(name, venueOpen, venueClose)
+	)
+	rows = cursor.rowcount
+
+	if not rows == 1:
+		db.rollback()
+		raise Exception('Venue not added')
+
+	db.commit()
+	msg = "Venue {} has been added successfully".format(name)
+	return msg
+
+def deleteVenue(venueId):
+	cursor.execute(
+		"delete from venues where id = %s", (venueId,)
+	)
+	rows = cursor.rowcount
+	
+	if not rows == 1:
+		db.rollback()
+		raise Exception('Venue not deleted')
+
+	db.commit()
+	msg = "Venue {} has been deleted successfully".format(venueId)
+	return msg
+
 def getEvent(eventId):
     cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
     result = cursor.fetchone()
