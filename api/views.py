@@ -56,8 +56,12 @@ def my_events(request):
 
 def admin(request):
     users = controllers.getUsers()
+    venues = controllers.getVenues()
+    events = controllers.getEvents()
     context = {
-        "users": users
+        "users": users,
+        "venues": venues,
+        "events": events
     }
 
     return render(request, 'admin.html', context)

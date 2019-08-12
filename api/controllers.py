@@ -32,12 +32,14 @@ def getEvents():
 
 def getVenues():
 	venues = []
-	cursor.execute("select id, name from venues")
+	cursor.execute("select id, name, open, close from venues")
 	results = cursor.fetchall()
 	for r in results:
 		venue = {
 			"id": r[0],
-			"name": r[1]
+			"name": r[1],
+			"open": r[2],
+			"close": r[3]
 		}
 		venues.append(venue)
 	return venues
