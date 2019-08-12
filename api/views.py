@@ -18,7 +18,7 @@ def events(request):
         searchTerm = request.POST["search"]
 
         if searchTerm:
-            events = list(filter(lambda e: e.name == searchTerm, events))
+            events = list(filter(lambda e: e.name.startswith(searchTerm.lower()), events))
 
     context = {
         'events': events,
@@ -137,7 +137,7 @@ def handleCreateEvent(request):
         venueId = request.POST.get("venueId")
         datetime = request.POST.get("date")
         capacity = request.POST.get("capacity")
-        controllers.createEvent(name, description, venueId, datetime, capacity)
+        controllers.createEvent(name.lower(), description, venueId, datetime, capacity)
     except:
         events = controllers.getEvents()
         venues = controllers.getVenues()
