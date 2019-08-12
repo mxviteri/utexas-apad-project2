@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block page_content %}
-<div class="jumbotron">
+<div class="jumbotron jumbotron-fluid bg-secondary text-white">
     <div class="container">
-        <h1 class="display-2">Events ATX</h1>
+        <img src="{% static 'img/EventsATX-logo.png' %}" alt="Events ATX" width="750"></img>
         <p class="display-4">Events ATX allows you to find, create, and join events around Austin, Texas</p>
     </div>
 </div>
