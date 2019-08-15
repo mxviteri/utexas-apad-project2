@@ -11,29 +11,34 @@ db = pymysql.connect(
 	os.getenv("DB_PASS"),
 	os.getenv("DB_NAME")
 )
-cursor = db.cursor()
 
 def getUsers():
+	cursor = db.cursor()
 	cursor.execute("select id, username, role from users")
 	result = cursor.fetchall()
+	cursor.close()
 	UserRecord = namedtuple("UserRecord", "id, username, role")
 	users = map(UserRecord._make, result)
 	return list(users)
 
 def getEvents():
-    events = []
-    cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id")
-    result = cursor.fetchall()
-    for item in result:
-        EventRecord = namedtuple("EventRecord", "id, name, venue, datetime, capacity, description")
-        event = EventRecord._make(item)
-        events.append(event)
-    return events
+	events = []
+	cursor = db.cursor()
+	cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id")
+	result = cursor.fetchall()
+	cursor.close()
+	for item in result:
+		EventRecord = namedtuple("EventRecord", "id, name, venue, datetime, capacity, description")
+		event = EventRecord._make(item)
+		events.append(event)
+	return events
 
 def getVenues():
 	venues = []
+	cursor = db.cursor()
 	cursor.execute("select id, name, open, close from venues")
 	results = cursor.fetchall()
+	cursor.close()
 	for r in results:
 		venue = {
 			"id": r[0],
@@ -45,6 +50,7 @@ def getVenues():
 	return venues
 
 def createVenue(name, venueOpen, venueClose):
+	cursor = db.cursor()
 	cursor.execute(
 		"insert into venues(name, open, close) values(%s, %s, %s)",
 		(name, venueOpen, venueClose)
@@ -56,10 +62,12 @@ def createVenue(name, venueOpen, venueClose):
 		raise Exception('Venue not added')
 
 	db.commit()
+	cursor.close()
 	msg = "Venue {} has been added successfully".format(name)
 	return msg
 
 def deleteVenue(venueId):
+	cursor = db.cursor()
 	cursor.execute(
 		"delete from venues where id = %s", (venueId,)
 	)
@@ -70,17 +78,20 @@ def deleteVenue(venueId):
 		raise Exception('Venue not deleted')
 
 	db.commit()
+	cursor.close()
 	msg = "Venue {} has been deleted successfully".format(venueId)
 	return msg
 
 def getEvent(eventId):
-    cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
-    result = cursor.fetchone()
-    EventRecord = namedtuple("EventRecord", "id, name, venue, datetime, capacity, description")
-    event = EventRecord._make(result)
-    return event
+	cursor = db.cursor()
+	cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
+	result = cursor.fetchone()
+	EventRecord = namedtuple("EventRecord", "id, name, venue, datetime, capacity, description")
+	event = EventRecord._make(result)
+	return event
 
 def isAdmin(name):
+	cursor = db.cursor()
 	cursor.execute(
 		"""
 		select name from roles
@@ -89,14 +100,18 @@ def isAdmin(name):
 		""", (name,)
 	)
 	result = cursor.fetchone()
+	cursor.close()
 	return True if result and result[0] == "admin" else False
 
 def findUser(name):
+	cursor = db.cursor()
 	cursor.execute("select * from users where user = %s", (name,))
 	result = cursor.fetchone()
+	cursor.close()
 	return result[1] if result else None
 
 def addUser(username, password, role):
+	cursor = db.cursor()
 	cursor.execute(
 		"""insert into users(username, password, role) values(%s, %s, 
 		(select id from roles where name = %s)
@@ -109,10 +124,12 @@ def addUser(username, password, role):
 		raise Exception('User not added')
 
 	db.commit()
+	cursor.close()
 	msg = "User {} has been added successfully".format(username)
 	return msg
 
 def deleteUser(userId):
+	cursor = db.cursor()
 	cursor.execute(
 		"delete from users where id = %s", (userId,)
 	)
@@ -123,10 +140,12 @@ def deleteUser(userId):
 		raise Exception('User not deleted')
 
 	db.commit()
+	cursor.close()
 	msg = "User {} has been deleted successfully".format(userId)
 	return msg
 
 def loginUser(username, password):
+	cursor = db.cursor()
 	cursor.execute(
 		"""
 		select u.id, u.username, r.name from users u
@@ -135,6 +154,7 @@ def loginUser(username, password):
 		""", (username, password)
 	)
 	result = cursor.fetchone()
+	cursor.close()
 	if not result:
 		return {}
 
@@ -150,6 +170,7 @@ def joinEvent(userId, eventId):
 	if total >= capacity:
 		raise Exception('The event with id: {}, is at capacity'.format(eventId))
 
+	cursor = db.cursor()	
 	cursor.execute(
 		"insert into usersEvents(userId, eventId) values(%s, %s)", (userId, eventId)
 	)
@@ -160,10 +181,12 @@ def joinEvent(userId, eventId):
 		raise Exception('User could not join event')
 
 	db.commit()
+	cursor.close()
 	msg = "User has successfully joined the event"
 	return msg
 
 def leaveEvent(userId, eventId):
+	cursor = db.cursor()
 	cursor.execute(
 		"delete from usersEvents where userId = %s and eventId = %s", (userId, eventId)
 	)
@@ -174,16 +197,20 @@ def leaveEvent(userId, eventId):
 		raise Exception('User could not leave event')
 
 	db.commit()
+	cursor.close()
 	msg = "User has left the event"
 	return msg
 
 def getCapacityByEventId(eventId):
+	cursor = db.cursor()
 	cursor.execute("select capacity from events where id = %s", (eventId,))
 	result = cursor.fetchone()
+	cursor.close()
 	return result[0] if result is not None else None
 
 def getParticipantsByEventId(eventId):
 	users = []
+	cursor = db.cursor()
 	cursor.execute(
 		"""
 			select u.username from usersEvents ue
@@ -192,12 +219,14 @@ def getParticipantsByEventId(eventId):
 		""", (eventId,)
 	)
 	result = cursor.fetchall()
+	cursor.close()
 	if result:
 		for item in result:
 			users.append(item[0])
 	return users
 
 def getEventsByUserId(userId):
+	cursor = db.cursor()
 	cursor.execute(
 		"""
 			select
@@ -210,6 +239,7 @@ def getEventsByUserId(userId):
 		""", (userId,)
 	)
 	results = cursor.fetchall()
+	cursor.close()
 	EventRecord = namedtuple("EventRecord", "id, name, description, venue, datetime")
 	eventMap = map(EventRecord._make, results)
 	events = []
@@ -227,6 +257,7 @@ def getEventsByUserId(userId):
 	return events
 
 def currentParticipantTotal(eventId):
+	cursor = db.cursor()
 	cursor.execute(
 		"""
 			SELECT COUNT(ue.userId) as total, e.capacity
@@ -238,6 +269,7 @@ def currentParticipantTotal(eventId):
 	)
 	TotalRecord = namedtuple('TotalRecord','total, capacity')
 	result = cursor.fetchone()
+	cursor.close()
 
 	if not result:
 		raise Exception('The event with id: {}, could not be found'.format(eventId))
@@ -246,6 +278,7 @@ def currentParticipantTotal(eventId):
 	return (record.total, record.capacity)
 
 def createEvent(name, description, venueId, datetime, capacity):
+	cursor = db.cursor()
 	cursor.execute(
 		"""insert into events(name, description, venue, datetime, capacity) values(%s, %s, %s, %s, %s)""",
 		(name, description, venueId, datetime, capacity))
@@ -256,19 +289,22 @@ def createEvent(name, description, venueId, datetime, capacity):
 		raise Exception('Event not created')
 
 	db.commit()
+	cursor.close()
 	msg = "Event {} has been added successfully".format(name)
 	return msg
 
 def deleteEvent(eventId):
-    cursor.execute(
+	cursor = db.cursor()
+	cursor.execute(
 		"""delete from events where id = %s""",
-        (eventId,))
-    rows = cursor.rowcount
+		(eventId,))
+	rows = cursor.rowcount
 
-    if not rows == 1:
-        db.rollback()
-        raise Exception('Event not deleted')
+	if not rows == 1:
+		db.rollback()
+		raise Exception('Event not deleted')
 
-    db.commit()
-    msg = "Event has been successfully deleted"
-    return msg
+	db.commit()
+	cursor.close()
+	msg = "Event has been successfully deleted"
+	return msg
