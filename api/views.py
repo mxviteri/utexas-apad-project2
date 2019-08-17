@@ -221,9 +221,35 @@ def getEvents(request):
 		}
 	    events.append(e)
 
-
     return JsonResponse({ "data": events })
 
+@require_http_methods(["GET", "POST"])
+def handleEvents(request, eventId):
+    print("METHOD", request.method)
+    if request.method == "GET":
+        return getEventsById(request, eventId)
+    elif request.method == "POST":
+        return joinEvent(request, eventId)
+
+@require_http_methods(["GET"])
+def getEventsById(request, eventId):
+    eventsTuple = controllers.getEvents()
+    events = []
+
+    for event in eventsTuple:
+	    e = {
+			"id": event.id,
+			"name": event.name,
+			"venue": event.venue,
+			"datetime": event.datetime,
+            "capacity": event.capacity,
+            "description": event.description
+		}
+	    events.append(e)
+    event = list(filter(lambda e: e["id"] == eventId, events))
+    data = event[0] if len(event) else {}
+    return JsonResponse({ "data": data })
+    
 
 @require_http_methods(["POST"])
 def addUser(request):
