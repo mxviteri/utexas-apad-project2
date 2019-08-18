@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 import api.views as views
 
+# deploying changes
 urlpatterns = [
     ## PAGE ROUTES ##
     path('', views.homePage),
