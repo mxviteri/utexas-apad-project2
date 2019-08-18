@@ -5,14 +5,16 @@ from collections import namedtuple
 
 load_dotenv()
 
-db = pymysql.connect(
-	os.getenv("DB_HOST"),
-	os.getenv("DB_USER"),
-	os.getenv("DB_PASS"),
-	os.getenv("DB_NAME")
-)
+def dbConnect():
+	return pymysql.connect(
+		os.getenv("DB_HOST"),
+		os.getenv("DB_USER"),
+		os.getenv("DB_PASS"),
+		os.getenv("DB_NAME")
+	)
 
 def getUsers():
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute("select id, username, role from users")
 	result = cursor.fetchall()
@@ -23,6 +25,7 @@ def getUsers():
 
 def getEvents():
 	events = []
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id")
 	result = cursor.fetchall()
@@ -35,6 +38,7 @@ def getEvents():
 
 def getVenues():
 	venues = []
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute("select id, name, open, close from venues")
 	results = cursor.fetchall()
@@ -50,6 +54,7 @@ def getVenues():
 	return venues
 
 def createVenue(name, venueOpen, venueClose):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"insert into venues(name, open, close) values(%s, %s, %s)",
@@ -67,6 +72,7 @@ def createVenue(name, venueOpen, venueClose):
 	return msg
 
 def deleteVenue(venueId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"delete from venues where id = %s", (venueId,)
@@ -83,6 +89,7 @@ def deleteVenue(venueId):
 	return msg
 
 def getEvent(eventId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute("select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue = v.id where %s = e.id", (eventId,))
 	result = cursor.fetchone()
@@ -91,6 +98,7 @@ def getEvent(eventId):
 	return event
 
 def isAdmin(name):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""
@@ -104,6 +112,7 @@ def isAdmin(name):
 	return True if result and result[0] == "admin" else False
 
 def findUser(name):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute("select * from users where user = %s", (name,))
 	result = cursor.fetchone()
@@ -111,6 +120,7 @@ def findUser(name):
 	return result[1] if result else None
 
 def addUser(username, password, role):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""insert into users(username, password, role) values(%s, %s, 
@@ -129,6 +139,7 @@ def addUser(username, password, role):
 	return msg
 
 def deleteUser(userId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"delete from users where id = %s", (userId,)
@@ -145,6 +156,7 @@ def deleteUser(userId):
 	return msg
 
 def loginUser(username, password):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""
@@ -170,6 +182,7 @@ def joinEvent(userId, eventId):
 	if total >= capacity:
 		raise Exception('The event with id: {}, is at capacity'.format(eventId))
 
+	db = dbConnect()
 	cursor = db.cursor()	
 	cursor.execute(
 		"insert into usersEvents(userId, eventId) values(%s, %s)", (userId, eventId)
@@ -186,6 +199,7 @@ def joinEvent(userId, eventId):
 	return msg
 
 def leaveEvent(userId, eventId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"delete from usersEvents where userId = %s and eventId = %s", (userId, eventId)
@@ -202,6 +216,7 @@ def leaveEvent(userId, eventId):
 	return msg
 
 def getCapacityByEventId(eventId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute("select capacity from events where id = %s", (eventId,))
 	result = cursor.fetchone()
@@ -210,6 +225,7 @@ def getCapacityByEventId(eventId):
 
 def getParticipantsByEventId(eventId):
 	users = []
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""
@@ -226,6 +242,7 @@ def getParticipantsByEventId(eventId):
 	return users
 
 def getEventsByUserId(userId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""
@@ -257,6 +274,7 @@ def getEventsByUserId(userId):
 	return events
 
 def currentParticipantTotal(eventId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""
@@ -278,6 +296,7 @@ def currentParticipantTotal(eventId):
 	return (record.total, record.capacity)
 
 def createEvent(name, description, venueId, datetime, capacity):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""insert into events(name, description, venue, datetime, capacity) values(%s, %s, %s, %s, %s)""",
@@ -294,6 +313,7 @@ def createEvent(name, description, venueId, datetime, capacity):
 	return msg
 
 def deleteEvent(eventId):
+	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
 		"""delete from events where id = %s""",
