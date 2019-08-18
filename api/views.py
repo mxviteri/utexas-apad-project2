@@ -329,12 +329,12 @@ def joinEventRequest(request):
         userId = body.get("userId")
         eventId = body.get("eventId")
         controllers.joinEvent(userId, eventId)
-        return JsonResponse({ "msg": "successfully joined event" })
+        return JsonResponse({ "msg": "Successfully joined event" })
     except Exception as e:
         event = controllers.getEvent(eventId)
         users = controllers.getParticipantsByEventId(eventId)
         context = { 
-            'warning': 'Could not join event.',
+            'warning': 'Could not join event',
             'msg': str(e),
             'event': event,
             'users': users
@@ -348,12 +348,12 @@ def leaveEventRequest(request):
         userId = body.get("userId")
         eventId = body.get("eventId")
         controllers.leaveEvent(userId, eventId)
-        return JsonResponse({ "msg": "successfully left event" })
+        return JsonResponse({ "msg": "Successfully left event" })
     except Exception as e:
         event = controllers.getEvent(eventId)
         users = controllers.getParticipantsByEventId(eventId)
         context = { 
-            'warning': 'Could not leave event.',
+            'warning': 'Could not leave event',
             'msg': str(e),
             'event': event,
             'users': users
