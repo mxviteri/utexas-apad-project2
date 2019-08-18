@@ -45,6 +45,7 @@ urlpatterns = [
     path('api/users/delete', views.deleteUser),
     path('api/users/<int:userId>/events', views.getUserEvents),
     path('api/events', views.getEvents),
+    path('api/events/join', views.joinEventRequest),
     path('api/events/<int:eventId>', views.handleEvents),
     path('api/events/<int:eventId>/capacity', views.getEventCapacity),
     path('api/events/<int:eventId>/participants', views.getEventParticipants)

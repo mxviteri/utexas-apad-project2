@@ -321,3 +321,22 @@ def getUserEvents(request, userId):
         return JsonResponse({ "events": result })
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)
+
+@require_http_methods(["POST"])
+def joinEventRequest(request):
+    try:
+        body = json.loads(request.body)
+        userId = body.get("userId")
+        eventId = body.get("eventId")
+        controllers.joinEvent(userId, eventId)
+        return JsonResponse({ "msg": "successfully joined event" })
+    except Exception as e:
+        event = controllers.getEvent(eventId)
+        users = controllers.getParticipantsByEventId(eventId)
+        context = { 
+            'warning': 'Could not join event.',
+            'msg': str(e),
+            'event': event,
+            'users': users
+            }
+        return JsonResponse(context, status=400)
