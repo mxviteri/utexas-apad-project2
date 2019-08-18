@@ -340,3 +340,22 @@ def joinEventRequest(request):
             'users': users
             }
         return JsonResponse(context, status=400)
+
+@require_http_methods(["POST"])
+def leaveEventRequest(request):
+    try:
+        body = json.loads(request.body)
+        userId = body.get("userId")
+        eventId = body.get("eventId")
+        controllers.leaveEvent(userId, eventId)
+        return JsonResponse({ "msg": "successfully left event" })
+    except Exception as e:
+        event = controllers.getEvent(eventId)
+        users = controllers.getParticipantsByEventId(eventId)
+        context = { 
+            'warning': 'Could not leave event.',
+            'msg': str(e),
+            'event': event,
+            'users': users
+            }
+        return JsonResponse(context, status=400)
