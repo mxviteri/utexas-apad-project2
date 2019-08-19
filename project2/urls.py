@@ -50,5 +50,6 @@ urlpatterns = [
     path('api/events/<int:eventId>', views.handleEvents),
     path('api/events/<int:eventId>/capacity', views.getEventCapacity),
     path('api/events/<int:eventId>/participants', views.getEventParticipants),
-    path('api/venues', views.getVenues)
+    path('api/venues', views.getVenues),
+    path('api/events/create', views.createEvent)
 ]

@@ -258,7 +258,7 @@ def getEventsById(request, eventId):
 @require_http_methods(["GET"])
 def getVenues(request):
     venues = controllers.getVenues()
-    
+
     data = venues if len(venues) else {}
     return JsonResponse({ "data": data })
     
@@ -371,3 +371,18 @@ def leaveEventRequest(request):
             'users': users
             }
         return JsonResponse(context, status=400)
+
+@require_http_methods(["POST"])
+def createEvent(request):
+    body = json.loads(request.body)
+    name = body["name"]
+    description = body["description"]
+    venue = body["venue"]
+    datetime = body["datetime"]
+    capacity = body["capacity"]
+
+    try:
+        result = controllers.addUser(name, description, venue, datetime, capacity)
+        return JsonResponse({ "msg": result })
+    except Exception as e:
+        return JsonResponse({ "msg": str(e) }, status=400)
