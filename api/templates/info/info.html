@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-4">Information</h1>
+    </div>
+</div>
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li class="nav-item active"><a class="nav-link active" data-toggle="tab" href="#narrative">The Narrative</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#howToWeb">How To: Web</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#howToApp">How To: App</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#appDownload">App Download</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#aboutUs">About Us</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="narrative">
+            {% include 'info/narrative.html' %}
+        </div>
+        <div class="tab-pane fade" id="howToWeb">
+            {% include 'info/howToWeb.html' %}
+        </div>
+        <div class="tab-pane fade" id="howToApp">
+            {% include 'info/howToApp.html' %}
+        </div>
+        <div class="tab-pane fade" id="appDownload">
+            {% include 'info/appDownload.html' %}
+        </div>
+        <div class="tab-pane fade" id="aboutUs">
+            {% include 'info/aboutUs.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

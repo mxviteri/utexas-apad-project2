@@ -10,6 +10,9 @@ import api.controllers as controllers
 def homePage(request):
     return render(request, 'home.html')
 
+def infoPage(request):
+    return render(request, 'info/info.html')
+
 def events(request):
     events = controllers.getEvents()
     venues = controllers.getVenues()

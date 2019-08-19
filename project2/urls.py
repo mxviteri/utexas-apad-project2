@@ -25,6 +25,7 @@ urlpatterns = [
     path('events/<int:eventId>', views.event_detail),
     path('myevents/', views.my_events),
     path('create_account/', views.create_account),
+    path('info/', views.infoPage),
     ## ADMIN ##
     path('admin/', views.admin, name="admin"),
     ## PAGE ACTIONS ###
