@@ -329,8 +329,8 @@ def createEventWithVenueName(name, description, venue, datetime, capacity):
 	db = dbConnect()
 	cursor = db.cursor()
 	cursor.execute(
-		"""insert into events(name, description, (select id from venues where name = %s), datetime, capacity) values(%s, %s, %s, %s)""",
-		(venue, name, description, datetime, capacity))
+		"""insert into events(name, description, venue, datetime, capacity) values(%s, %s, (select id from venues where name = %s), %s, %s)""",
+		(name, description, venue, datetime, capacity))
 	rows = cursor.rowcount
 
 	if not rows == 1:
