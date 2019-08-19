@@ -254,6 +254,13 @@ def getEventsById(request, eventId):
     event = list(filter(lambda e: e["id"] == eventId, events))
     data = event[0] if len(event) else {}
     return JsonResponse({ "data": data })
+
+@require_http_methods(["GET"])
+def getVenues(request):
+    venues = controllers.getVenues()
+    
+    data = venues if len(venues) else {}
+    return JsonResponse({ "data": data })
     
 
 @require_http_methods(["POST"])
