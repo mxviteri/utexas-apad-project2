@@ -78,7 +78,8 @@ def admin(request):
 
 def handleLogin(request):
     response = HttpResponseRedirect('/events')
-    password, username = sorted(list(request.POST.values()))
+    username = request.POST.get("username")
+    password = request.POST.get("password")
     result = controllers.loginUser(username, password)
 
     if len(result) > 0:
