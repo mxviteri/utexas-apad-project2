@@ -40,8 +40,7 @@ def searchEvents(query):
 	events = []
 	db = dbConnect()
 	cursor = db.cursor()
-	cursor.execute("""select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id where e.name COLLATE UTF8_GENERAL_CI like 
-	"%\%s%" """, (query,))
+	cursor.execute("""select e.id, e.name, v.name, e.datetime, e.capacity, convert(e.description using utf8) from events e join venues v on e.venue=v.id where e.name COLLATE UTF8_GENERAL_CI like %s""", ("%" + query + "%",))
 	result = cursor.fetchall()
 	cursor.close()
 	for item in result:
