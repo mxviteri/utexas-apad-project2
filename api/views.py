@@ -210,6 +210,8 @@ def getEvents(request):
     eventsTuple = controllers.getEvents()
     events = []
 
+    print(request.META['QUERY_STRING'])
+
     for event in eventsTuple:
 	    e = {
 			"id": event.id,
