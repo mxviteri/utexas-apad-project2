@@ -325,6 +325,23 @@ def createEvent(name, description, venueId, datetime, capacity):
 	msg = "Event {} has been added successfully".format(name)
 	return msg
 
+def createEventWithVenueName(name, description, venue, datetime, capacity):
+	db = dbConnect()
+	cursor = db.cursor()
+	cursor.execute(
+		"""insert into events(name, description, (select id from venues where name = %s), datetime, capacity) values(%s, %s, %s, %s)""",
+		(venue, name, description, datetime, capacity))
+	rows = cursor.rowcount
+
+	if not rows == 1:
+		db.rollback()
+		raise Exception('Event not created')
+
+	db.commit()
+	cursor.close()
+	msg = "Event {} has been added successfully".format(name)
+	return msg
+
 def deleteEvent(eventId):
 	db = dbConnect()
 	cursor = db.cursor()

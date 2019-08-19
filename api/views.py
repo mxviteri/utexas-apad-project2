@@ -382,7 +382,7 @@ def createEvent(request):
     capacity = body["capacity"]
 
     try:
-        result = controllers.createEvent(name, description, venue, datetime, capacity)
+        result = controllers.createEvent(venue, name, description, datetime, capacity)
         return JsonResponse({ "msg": result })
     except Exception as e:
         return JsonResponse({ "msg": str(e) }, status=400)
