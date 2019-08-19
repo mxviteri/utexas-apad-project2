@@ -14,7 +14,7 @@ def events(request):
     events = controllers.getEvents()
     venues = controllers.getVenues()
 
-    query = request.META['QUERY_STRING']
+    query = request.GET.get("search", "")
 
     if request.method == "POST":
         searchTerm = request.POST["search"]
