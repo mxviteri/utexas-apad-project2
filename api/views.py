@@ -14,7 +14,11 @@ def events(request):
     events = controllers.getEvents()
     venues = controllers.getVenues()
 
-    query = request.GET.get("search", "")
+    query = request.GET.get("search")
+    if query:
+        msg = "search"
+    else:
+        msg = "not search"
 
     if request.method == "POST":
         searchTerm = request.POST["search"]
@@ -23,7 +27,7 @@ def events(request):
             events = list(filter(lambda e: e.name.startswith(searchTerm.lower()), events))
 
     context = {
-        'query': query,
+        'msg': msg,
         'events': events,
         'venues': venues
     }
@@ -210,6 +214,7 @@ def deleteUser(request):
 
 @require_http_methods(["GET"])
 def getEvents(request):
+    query = request.GET.get("search", "")
     eventsTuple = controllers.getEvents()
     events = []
 
