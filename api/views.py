@@ -96,7 +96,8 @@ def handleLogout(request):
 
 def handleCreateAccount(request):
     try:
-        password, username = sorted(list(request.POST.values()))
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         controllers.addUser(username, password, 'user')
     except:
         context = { 'warning': 'Could not create account. Try again.' }
