@@ -14,6 +14,8 @@ def events(request):
     events = controllers.getEvents()
     venues = controllers.getVenues()
 
+    query = request.META['QUERY_STRING']
+
     if request.method == "POST":
         searchTerm = request.POST["search"]
 
@@ -21,6 +23,7 @@ def events(request):
             events = list(filter(lambda e: e.name.startswith(searchTerm.lower()), events))
 
     context = {
+        'query': query,
         'events': events,
         'venues': venues
     }
@@ -209,8 +212,6 @@ def deleteUser(request):
 def getEvents(request):
     eventsTuple = controllers.getEvents()
     events = []
-
-    print(request.META['QUERY_STRING'])
 
     for event in eventsTuple:
 	    e = {
